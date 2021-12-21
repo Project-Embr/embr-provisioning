@@ -1,0 +1,10 @@
+---
+- name: 'Provision System'
+  hosts: default
+  become: true
+
+  tasks:
+  - name: Create Ember Directory
+    file:
+      path: /var/ember
+      state: directory
