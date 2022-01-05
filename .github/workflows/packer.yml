@@ -1,0 +1,37 @@
+name: Packer
+
+on:
+  push:
+    paths:
+      - '**.pkr.hcl'
+  pull_request:
+    paths:
+      - '**.pkr.hcl'
+
+env:
+  file: "systems/rpi4/ubuntu_server_20.04.pkr.hcl"
+
+jobs:
+  packer:
+    runs-on: ubuntu-latest
+    name: packer
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Format Packer File
+        uses: hashicorp/packer-github-actions@master
+        with:
+          command: fmt
+          target: ${{ env.file }}
+
+      - name: Validate Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          command: validate
+          arguments: -syntax-only
+          target: ${{ env.file }}
+
+      - name: Ensure Formatted Correctly
+        run: git diff --exit-code ${{ env.file }}

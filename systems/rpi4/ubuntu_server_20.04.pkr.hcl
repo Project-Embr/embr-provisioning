@@ -41,15 +41,17 @@ build {
   }
 
   provisioner "shell" {
-    inline = [
-      "apt-get update",
-      "apt-get install -y openssh-server network-manager net-tools"
-    ]
+   inline = [
+     "apt-get update",
+     "apt-get install -y openssh-server network-manager net-tools"
+   ]
   }
 
-  provisioner "ansible" {
-    playbook_file = "./ansible/entrypoint.yml"
-  }
+  # provisioner "ansible" {
+  #   #use_proxy = false
+  #   playbook_file = "./ansible/entrypoint.yml"
+  #   extra_arguments = [ "-vvvv" ]
+  # }
 
   provisioner "shell" {
     inline = ["mv /etc/resolv.conf.bak /etc/resolv.conf"]
